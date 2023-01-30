@@ -29,7 +29,7 @@ public class ActionsHelper {
             billsInRegister[i - 1] += numOfBills;
         }
 
-        total = calculateTotal();
+        total = calculateTotalCash();
         getOperation();
     }
 
@@ -58,7 +58,7 @@ public class ActionsHelper {
                 case 5 -> billsInRegister[4] -= numOfBills;
             }
         }
-        total = calculateTotal();
+        total = calculateTotalCash();
         getOperation();
 
         total = calculateTotal(billsInRegister);
@@ -73,60 +73,65 @@ public class ActionsHelper {
             return;
         }
 
-        int money = Integer.parseInt(userInput[1]);
-        if (money <= total) {
-            //create variables for storing the cash that is being provided to the user
+        //Variable for the change amount user is requesting for
+        int input = Integer.parseInt(userInput[1]);
+
+        if (input <= total) {
+
+            //Variables for storing the cash denominations that is being provided to the user
             int twenty = 0;
             int ten = 0;
             int five = 0;
             int two = 0;
             int one = 0;
-            //boolean variable for when the change is successfully collected from the cash register.
+
+            //Boolean variable for when the change is successfully collected from the cash register.
             boolean success = true;
-            //loop for finding change
-            while (money > 0) {
-                //if user wants more than or equal to $20 and 20's are available in the cash register
-                if (money >= 20 && billsInRegister[0] - twenty > 0) {
-                    //deduct $20 from user request and increment twenty variable by one
-                    money -= 20;
+
+            //Loop for finding denomination of bills
+            while (input > 0) {
+                //If user wants more than or equal to $20 and 20's are available in the cash register
+                if (input >= 20 && billsInRegister[0] - twenty > 0) {
+                    //Deduct $20 from user request and increment twenty variable by one
+                    input -= 20;
                     twenty++;
-                } //if user wants more than or equal to $10 and 10's are available in the cash register
-                else if (money >= 10 && billsInRegister[1] - ten > 0) {
-                    //deduct $10 from user request and increment ten variable by one
-                    money -= 10;
+                } //If user wants more than or equal to $10 and 10's are available in the cash register
+                else if (input >= 10 && billsInRegister[1] - ten > 0) {
+                    //Deduct $10 from user request and increment ten variable by one
+                    input -= 10;
                     ten++;
                 } else {
-                    //if user wants more than or equal to $10 and cash user
+                    //If user wants more than or equal to $10 and cash user
                     //wants mod 2 is 0 and more than one $5 bills is available in the cash register
-                    if (money >= 10 && money % 2 == 0 && billsInRegister[2] - five > 1) {
-                        //deduct $10 from user request and increment five variable by two
-                        money -= 10;
+                    if (input >= 10 && input % 2 == 0 && billsInRegister[2] - five > 1) {
+                        //Deduct $10 from user request and increment five variable by two
+                        input -= 10;
                         five += 2;
                     } else {
-                        //if user wants more than $10 and 5 bills are available in the cash register
-                        if (money > 10 && billsInRegister[2] - five > 0) {
-                            //deduct $5 from user request and increment five variable by one
-                            money -= 5;
+                        //If user wants more than $10 and 5 bills are available in the cash register
+                        if (input > 10 && billsInRegister[2] - five > 0) {
+                            //Deduct $5 from user request and increment five variable by one
+                            input -= 5;
                             five++;
                         } else {
-                            //if user request is more than $5 and cash is available in 5 and 1 bills
-                            if (money > 5 && billsInRegister[2] - five > 0 && billsInRegister[4] - one > 0) {
-                                //deduct $5 from user request and increment five by one
-                                money -= 5;
+                            //If user request is more than $5 and cash is available in 5 and 1 bills
+                            if (input > 5 && billsInRegister[2] - five > 0 && billsInRegister[4] - one > 0) {
+                                //Deduct $5 from user request and increment five by one
+                                input -= 5;
                                 five++;
                             } else {
-                                //if user wants more than or equal to $2 and 2 bills available in the cash register
-                                if (money >= 2 && billsInRegister[3] - two > 0) {
-                                    //deduct $2 from user request and increment two variable by one
-                                    money -= 2;
+                                //If user wants more than or equal to $2 and 2 bills available in the cash register
+                                if (input >= 2 && billsInRegister[3] - two > 0) {
+                                    //Deduct $2 from user request and increment two variable by one
+                                    input -= 2;
                                     two++;
-                                } //if user wants more than or equal to $1 and 1 bills are available in the cash register
+                                } //If user wants more than or equal to $1 and 1 bills are available in the cash register
                                 else if (billsInRegister[4] - one > 0) {
-                                    //deduct $1 from user request and increment one variable by one
-                                    money -= 1;
+                                    //Deduct $1 from user request and increment one variable by one
+                                    input -= 1;
                                     one++;
                                 } else {
-                                    //print sorry message, set success to false(not found) and break the loop
+                                    //Print sorry message, set success to false(not found) and break the loop
                                     System.out.println("Sorry there is not enough cash in the register for this amount");
                                     success = false;
                                     break;
@@ -136,8 +141,8 @@ public class ActionsHelper {
                     }
                 }
             }
-            //if there is enough change in the cash register, then success remains true, and we deduct the cash from the
-            //register
+            //If there is enough change in the cash register, then success remains true, and we deduct the
+            //denomination of bills from the register
             if (success) {
                 //deduct found change cash from register cash
                 billsInRegister[0] -= twenty;
@@ -146,7 +151,8 @@ public class ActionsHelper {
                 billsInRegister[3] -= two;
                 billsInRegister[4] -= one;
 
-                total = calculateTotal();
+                total = calculateTotalCash();
+                //Printing the denomination of bills that is being taken after removing from the cash register
                 System.out.println(twenty + " " + ten + " " + five + " " + two + " " + one);
             }
         }
@@ -183,7 +189,7 @@ public class ActionsHelper {
 
     //This is the method that calculates how much total cash is in the cash register by multiplying all the denominations
     //by their value in the billsInRegister array
-    private static int calculateTotal() {
+    private static int calculateTotalCash() {
         int total = 0;
 
         total += ActionsHelper.billsInRegister[0] * 20;

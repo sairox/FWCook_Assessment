@@ -19,8 +19,8 @@ public class ActionsHelper {
     public static void putOperation(String[] userInput) {
         int numOfBills;
 
-        if (isNotNumeric(userInput)) {
-            System.out.println("Please retry with all numeric inputs only after the action");
+        if (isNotNumericOrIsNegative(userInput)) {
+            System.out.println("Please retry with all non-negative numeric inputs only after the action");
             return;
         }
 
@@ -35,8 +35,8 @@ public class ActionsHelper {
 
     //Method to take bills of certain denomination that the user requests for
     public static void takeOperation(String[] userInput) {
-        if (isNotNumeric(userInput)) {
-            System.out.println("Please retry with all numeric inputs only after the action");
+        if (isNotNumericOrIsNegative(userInput)) {
+            System.out.println("Please retry with all non-negative numeric inputs only after the action");
             return;
         }
 
@@ -68,8 +68,8 @@ public class ActionsHelper {
     //Method that gives the denomination of bills of a certain change amount the user requests
     public static void changeOperation(String[] userInput) {
         //Variable for the amount of change the user wants
-        if(isNotNumeric(userInput)){
-            System.out.println("Please retry with all numeric inputs only after the action");
+        if(isNotNumericOrIsNegative(userInput)){
+            System.out.println("Please retry with all non-negative numeric inputs only after the action");
             return;
         }
 
@@ -162,11 +162,16 @@ public class ActionsHelper {
     }
 
     //This method checks if the user inputted a numeric number for a denomination by parsing the userInput which comes
-    //in as a String and if it catches an exception and returns true that means the user inputted a non numeric number
-    private static boolean isNotNumeric(String[] userInput) {
+    //in as a String and if it catches an exception and returns true that means the user inputted a non-numeric number
+    //if no exception is thrown then it checks if user inputted a negative number, which is not allowed also
+    private static boolean isNotNumericOrIsNegative(String[] userInput) {
+        int bill;
         for (int i = 1; i < userInput.length; i++) {
             try {
-                Integer.parseInt(userInput[i]);
+                bill = Integer.parseInt(userInput[i]);
+                if(bill < 0){
+                    return true;
+                }
             } catch (NumberFormatException e) {
                 return true;
             }

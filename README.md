@@ -3,6 +3,9 @@
 Instructions to run:
 In terminal or command prompt, go to the path of the file and type this
 command to compile the java class:
+
+**Make sure your sdk is jdk17 as I used java 17 to make this project.**
+
 >javac CashRegisterCLI.java
 
 Then after compiling, run the program with this command:

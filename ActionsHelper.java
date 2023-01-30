@@ -46,7 +46,7 @@ public class ActionsHelper {
             return;
         }
 
-                for (int i = 1; i < userInput.length; i++) {
+        for (int i = 1; i < userInput.length; i++) {
             String num = userInput[i];
             int numOfBills = Integer.parseInt(num);
 

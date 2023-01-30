@@ -5,16 +5,21 @@ public class ActionsHelper {
     //This is the object used to keep track of the total cash that is in the register
     private static int total;
 
-    public static void getOperation(int[] billsInRegister) {
+    //This is the object to store the bill denominations that are in the cash register
+    private static final int[] billsInRegister = new int[5];
+
+    //Method that gets the amount of total cash and the different bill denominations
+    public static void getOperation() {
         String formattedOutput = Arrays.toString(billsInRegister).replace(",", "")
                 .replace("[", " ").replace("]", "");
         System.out.println("$" + total + formattedOutput);
     }
 
-    public static void putOperation(String[] userInput, int[] billsInRegister) {
+    //Method to put the money the user gives and incrementing the different denomination of bills
+    public static void putOperation(String[] userInput) {
         int numOfBills;
 
-        if (!isNumeric(userInput)) {
+        if (isNotNumeric(userInput)) {
             System.out.println("Please retry with all numeric inputs only after the action");
             return;
         }
@@ -24,23 +29,24 @@ public class ActionsHelper {
             billsInRegister[i - 1] += numOfBills;
         }
 
-        total = calculateTotal(billsInRegister);
-        getOperation(billsInRegister);
+        total = calculateTotal();
+        getOperation();
     }
 
-    public static void takeOperation(String[] userInput, int[] billsInRegister) {
-        if (!isNumeric(userInput)) {
+    //Method to take bills of certain denomination that the user requests for
+    public static void takeOperation(String[] userInput) {
+        if (isNotNumeric(userInput)) {
             System.out.println("Please retry with all numeric inputs only after the action");
             return;
         }
 
-        if (checkEnoughBills(userInput, billsInRegister)) {
+        if (notEnoughBills(userInput)) {
             System.out.println("Sorry please input a number of bills that are less than or equal to whats in the" +
                     "Cash Register!");
             return;
         }
 
-        for (int i = 1; i < userInput.length; i++) {
+                for (int i = 1; i < userInput.length; i++) {
             String num = userInput[i];
             int numOfBills = Integer.parseInt(num);
 
@@ -52,13 +58,21 @@ public class ActionsHelper {
                 case 5 -> billsInRegister[4] -= numOfBills;
             }
         }
+        total = calculateTotal();
+        getOperation();
 
         total = calculateTotal(billsInRegister);
         getOperation(billsInRegister);
     }
 
-    public static void changeOperation(String[] userInput, int[] billsInRegister) {
-        //Variable for the amount fof change the user wants
+    //Method that gives the denomination of bills of a certain change amount the user requests
+    public static void changeOperation(String[] userInput) {
+        //Variable for the amount of change the user wants
+        if(isNotNumeric(userInput)){
+            System.out.println("Please retry with all numeric inputs only after the action");
+            return;
+        }
+
         int money = Integer.parseInt(userInput[1]);
         if (money <= total) {
             //create variables for storing the cash that is being provided to the user
@@ -113,7 +127,7 @@ public class ActionsHelper {
                                     one++;
                                 } else {
                                     //print sorry message, set success to false(not found) and break the loop
-                                    System.out.println("Sorry");
+                                    System.out.println("Sorry there is not enough cash in the register for this amount");
                                     success = false;
                                     break;
                                 }
@@ -122,7 +136,8 @@ public class ActionsHelper {
                     }
                 }
             }
-            //if found
+            //if there is enough change in the cash register, then success remains true, and we deduct the cash from the
+            //register
             if (success) {
                 //deduct found change cash from register cash
                 billsInRegister[0] -= twenty;
@@ -131,7 +146,7 @@ public class ActionsHelper {
                 billsInRegister[3] -= two;
                 billsInRegister[4] -= one;
 
-                total = calculateTotal(billsInRegister);
+                total = calculateTotal();
                 System.out.println(twenty + " " + ten + " " + five + " " + two + " " + one);
             }
         }
@@ -140,38 +155,42 @@ public class ActionsHelper {
         }
     }
 
-    //This method checks if the user inputted a numeric number for a denomination
-    private static boolean isNumeric(String[] userInput) {
+    //This method checks if the user inputted a numeric number for a denomination by parsing the userInput which comes
+    //in as a String and if it catches an exception and returns true that means the user inputted a non numeric number
+    private static boolean isNotNumeric(String[] userInput) {
         for (int i = 1; i < userInput.length; i++) {
             try {
-                Double.parseDouble(userInput[i]);
+                Integer.parseInt(userInput[i]);
             } catch (NumberFormatException e) {
-                return false;
+                return true;
             }
         }
-        return true;
+
+        return false;
     }
 
-    //Rename method
-    private static boolean checkEnoughBills(String[] userInput, int[] billsInRegister) {
-        int counter = 0;
+    //This method which is used in the take operation checks to see if the denomination of a bill the user requested
+    //is more than what is in the cash register. Ex. if there is only 1 20 dollar bill and user requests 2 bills
+    //the method will return true, or else it returns false
+    private static boolean notEnoughBills(String[] userInput) {
         for (int i = 1; i < userInput.length; i++) {
-            if (Integer.parseInt(userInput[i]) > billsInRegister[i - 1]) {
-                counter++;
+            if (Integer.parseInt(userInput[i]) > ActionsHelper.billsInRegister[i - 1]) {
+                return true;
             }
         }
-        return counter > 0;
+        return false;
     }
 
-    //This is the method that calculates how much total cash is in the cash register
-    private static int calculateTotal(int[] billsInRegister) {
+    //This is the method that calculates how much total cash is in the cash register by multiplying all the denominations
+    //by their value in the billsInRegister array
+    private static int calculateTotal() {
         int total = 0;
 
-        total += billsInRegister[0] * 20;
-        total += billsInRegister[1] * 10;
-        total += billsInRegister[2] * 5;
-        total += billsInRegister[3] * 2;
-        total += billsInRegister[4];
+        total += ActionsHelper.billsInRegister[0] * 20;
+        total += ActionsHelper.billsInRegister[1] * 10;
+        total += ActionsHelper.billsInRegister[2] * 5;
+        total += ActionsHelper.billsInRegister[3] * 2;
+        total += ActionsHelper.billsInRegister[4];
 
         return total;
     }

@@ -13,7 +13,6 @@ public class CashRegisterCLI {
                 These digits represent different amounts of certain bills in the cash register (20s 10s 5s 2s 1s).""");
 
         String[] userInput;
-        int[] changeArr = new int[5];
         boolean quit = false;
 
         while (!quit) {
@@ -21,10 +20,10 @@ public class CashRegisterCLI {
             userInput = actionInput(input);
             if(validAction(userInput)) {
                 switch (userInput[0].toLowerCase()) {
-                    case "get" -> ActionsHelper.getOperation(changeArr);
-                    case "put" -> ActionsHelper.putOperation(userInput, changeArr);
-                    case "take" -> ActionsHelper.takeOperation(userInput, changeArr);
-                    case "change" -> ActionsHelper.changeOperation(userInput, changeArr);
+                    case "get" -> ActionsHelper.getOperation();
+                    case "put" -> ActionsHelper.putOperation(userInput);
+                    case "take" -> ActionsHelper.takeOperation(userInput);
+                    case "change" -> ActionsHelper.changeOperation(userInput);
                     case "quit" -> {
                         quit = true;
                         System.out.println("Bye");

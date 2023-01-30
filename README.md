@@ -16,6 +16,17 @@ Example inputs are
 > 
 > get 
 > 
-> change 11
-> 
 > take 1 2 3 4 5
+> 
+> change 11
+
+If you input non-numeric or invalid requests such as:
+> put 1 2 3 4 r
+> 
+> take 1 2
+> 
+> null
+> 
+> change e
+
+These inputs will throw error messages

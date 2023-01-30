@@ -34,7 +34,7 @@ public class ActionsHelper {
             return;
         }
 
-        if (checkBillsAccount(userInput, billsInRegister)) {
+        if (checkEnoughBills(userInput, billsInRegister)) {
             System.out.println("Sorry please input a number of bills that are less than or equal to whats in the" +
                     "Cash Register!");
             return;
@@ -152,7 +152,8 @@ public class ActionsHelper {
         return true;
     }
 
-    private static boolean checkBillsAccount(String[] userInput, int[] billsInRegister) {
+    //Rename method
+    private static boolean checkEnoughBills(String[] userInput, int[] billsInRegister) {
         int counter = 0;
         for (int i = 1; i < userInput.length; i++) {
             if (Integer.parseInt(userInput[i]) > billsInRegister[i - 1]) {

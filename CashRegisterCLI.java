@@ -44,6 +44,6 @@ public class CashRegisterCLI {
     }
 
     private static boolean validAction(String[] userInput){
-        return userInput.length == 6 || userInput.length <= 1 || userInput.length == 2;
+        return userInput.length == 6 || userInput.length == 1 || userInput.length == 2;
     }
 }

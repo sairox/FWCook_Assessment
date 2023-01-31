@@ -69,7 +69,8 @@ public class ActionsHelper {
     public static void changeOperation(String[] userInput) {
         //Variable for the amount of change the user wants
         if (isNotNumericOrIsNegative(userInput)) {
-            System.out.println("Please retry with all non-negative numeric inputs only after the action");
+            System.out.println("Please retry with all non-negative numeric inputs or a valid change amount" +
+                    " only after the action");
             return;
         }
 
@@ -163,6 +164,12 @@ public class ActionsHelper {
     //if no exception is thrown then it checks if user inputted a negative number, which is not allowed also
     private static boolean isNotNumericOrIsNegative(String[] userInput) {
         int bill;
+
+        //Condition for when someone types only change and no amount is given after
+        if(userInput.length == 1){
+            return true;
+        }
+
         for (int i = 1; i < userInput.length; i++) {
             try {
                 bill = Integer.parseInt(userInput[i]);

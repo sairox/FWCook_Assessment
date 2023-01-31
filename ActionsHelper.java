@@ -84,44 +84,60 @@ public class ActionsHelper {
             //Boolean variable for when the change is successfully collected from the cash register.
             boolean success = true;
 
-            //Loop for finding denomination of bills
+            //Loop for finding denomination of bills and subtract from the input until input is 0
             while (input > 0) {
-                //If input variable is more than or equal to $20 and 20's are available in the cash register
+                //If input is more than or equal to $20 and 20's are available in the cash register
                 if (input >= 20 && billsInRegister[0] - twenty > 0) {
-                    //Deduct $20 from input variable and increment twenty variable by one
+                    //Deduct $20 from the input and increment twenty variable by one
                     input -= 20;
                     twenty++;
-                }
-                //If input variable is more than or equal to $10 and 10's are available in the cash register
+                } //If input is more than or equal to $10 and 10's are available in the cash register
                 else if (input >= 10 && billsInRegister[1] - ten > 0) {
-                    //Deduct $10 from input variable and increment ten variable by one
+                    //Deduct $10 from the input and increment ten variable by one
                     input -= 10;
                     ten++;
-                }
-                //If input variable is more than or equal to $5 and 5's are available in the cash register
-                else if (input >= 5 && billsInRegister[2] - five > 0) {
-                    //Deduct $5 from input variable and increment five variable by one
-                    input -= 5;
-                    five++;
-                }
-                //If input variable is more than or equal to $2 and 2's are available in the cash register
-                else if (input >= 2 && billsInRegister[3] - two > 0) {
-                    //Deduct $2 from input variable and increment two variable by one
-                    input -= 2;
-                    two++;
-                }
-                //If input variable is more than or equal to $1 and 1's are available in the cash register
-                else if (billsInRegister[4] - one > 0) {
-                    //Deduct $1 from input variable and increment one variable by one
-                    input -= 1;
-                    one++;
                 } else {
-                    System.out.println("Sorry there is not enough cash in the register for this amount");
-                    //success is set to false if bills are not there to equal to the change amount
-                    success = false;
-                    break;
+                    //If input more than or equal to $10 and cash user
+                    //wants mod 2 is 0 and more than one $5 bills is available in the cash register
+                    if (input >= 10 && input % 2 == 0 && billsInRegister[2] - five > 1) {
+                        //Deduct $10 from the input and increment five variable by two
+                        input -= 10;
+                        five += 2;
+                    } else {
+                        //If input is more than $10 and 5 bills are available in the cash register
+                        if (input > 10 && billsInRegister[2] - five > 0) {
+                            //Deduct $5 from the input and increment five variable by one
+                            input -= 5;
+                            five++;
+                        } else {
+                            //If input is more than $5 and cash is available in 5 and 1 bills
+                            if (input > 5 && billsInRegister[2] - five > 0 && billsInRegister[4] - one > 0) {
+                                //Deduct $5 from the input and increment five by one
+                                input -= 5;
+                                five++;
+                            } else {
+                                //If input is more than or equal to $2 and 2 bills available in the cash register
+                                if (input >= 2 && billsInRegister[3] - two > 0) {
+                                    //Deduct $2 from the input and increment two variable by one
+                                    input -= 2;
+                                    two++;
+                                } //If input is more than or equal to $1 and 1 bills are available in the cash register
+                                else if (billsInRegister[4] - one > 0) {
+                                    //Deduct $1 from the input and increment one variable by one
+                                    input -= 1;
+                                    one++;
+                                } else {
+                                    //Print sorry message, set success to false(not found) and break the loop
+                                    System.out.println("Sorry there is not enough cash in the register for this amount");
+                                    success = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
             //If there is enough change in the cash register, then success remains true, and we deduct the
             //denomination of bills from the register
             if (success) {

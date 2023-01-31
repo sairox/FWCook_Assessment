@@ -97,8 +97,8 @@ public class ActionsHelper {
                     input -= 10;
                     ten++;
                 } else {
-                    //If input more than or equal to $10 and cash user
-                    //wants mod 2 is 0 and more than one $5 bills is available in the cash register
+                    //If input more than or equal to $10 and input
+                    //mod 2 is 0 and more than one $5 bills is available in the cash register
                     if (input >= 10 && input % 2 == 0 && billsInRegister[2] - five > 1) {
                         //Deduct $10 from the input and increment five variable by two
                         input -= 10;

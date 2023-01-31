@@ -121,7 +121,8 @@ public class ActionsHelper {
                                     //Deduct $2 from the input and increment two variable by one
                                     input -= 2;
                                     two++;
-                                } //If input is more than or equal to $1 and 1 bills are available in the cash register
+                                }
+                                //If input is more than or equal to $1 and 1 bills are available in the cash register
                                 else if (billsInRegister[4] - one > 0) {
                                     //Deduct $1 from the input and increment one variable by one
                                     input -= 1;

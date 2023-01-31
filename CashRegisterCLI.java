@@ -9,8 +9,9 @@ public class CashRegisterCLI {
                 This is a cash register, please enter your action:\s
                 Actions include putting money, viewing how much money is in the register, taking certain bills and\040
                 taking certain amount of change from the cash register\s
-                Please enter what action (get, put, take, change or quit) then enter 5 digits with space in between.\s
-                These digits represent different amounts of certain bills in the cash register (20s 10s 5s 2s 1s).""");
+                Please enter what action (get, put, take, change or quit) then enter 5 non-negative digits with space\040
+                in between. These digits represent different amounts of certain bills in the cash register (20s 10s 5s 2s 1s).
+                Example input: put 1 2 3 4 5 or take 1 2 3 4 5 or get or change 11""");
 
         String[] userInput;
         boolean quit = false;

@@ -2,13 +2,13 @@ import java.util.Arrays;
 
 public class ActionsHelper {
 
+    //This is the object to store the bill denominations that are in the cash register
+    private static final int[] billsInRegister = new int[5];
     //This is the object used to keep track of the total cash that is in the register
     private static int total;
 
-    //This is the object to store the bill denominations that are in the cash register
-    private static final int[] billsInRegister = new int[5];
-
     //Method that gets the amount of total cash and the different bill denominations
+    //O(n) worst case
     public static void getOperation() {
         String formattedOutput = Arrays.toString(billsInRegister).replace(",", "")
                 .replace("[", " ").replace("]", "");
@@ -16,6 +16,7 @@ public class ActionsHelper {
     }
 
     //Method to put the money the user gives and incrementing the different denomination of bills
+    //O(n) worst case
     public static void putOperation(String[] userInput) {
         int numOfBills;
 
@@ -34,6 +35,7 @@ public class ActionsHelper {
     }
 
     //Method to take bills of certain denomination that the user requests for
+    //O(n) worst case
     public static void takeOperation(String[] userInput) {
         if (isNotNumericOrIsNegative(userInput)) {
             System.out.println("Please retry with all non-negative numeric inputs only after the action");
@@ -60,15 +62,13 @@ public class ActionsHelper {
         }
         total = calculateTotalCash();
         getOperation();
-
-        total = calculateTotal(billsInRegister);
-        getOperation(billsInRegister);
     }
 
     //Method that gives the denomination of bills of a certain change amount the user requests
+    //O(n), n being the user input amount of change
     public static void changeOperation(String[] userInput) {
         //Variable for the amount of change the user wants
-        if(isNotNumericOrIsNegative(userInput)){
+        if (isNotNumericOrIsNegative(userInput)) {
             System.out.println("Please retry with all non-negative numeric inputs only after the action");
             return;
         }
@@ -79,66 +79,47 @@ public class ActionsHelper {
         if (input <= total) {
 
             //Variables for storing the cash denominations that is being provided to the user
-            int twenty = 0;
-            int ten = 0;
-            int five = 0;
-            int two = 0;
-            int one = 0;
+            int twenty = 0, ten = 0, five = 0, two = 0, one = 0;
 
             //Boolean variable for when the change is successfully collected from the cash register.
             boolean success = true;
 
             //Loop for finding denomination of bills
             while (input > 0) {
-                //If user wants more than or equal to $20 and 20's are available in the cash register
+                //If input variable is more than or equal to $20 and 20's are available in the cash register
                 if (input >= 20 && billsInRegister[0] - twenty > 0) {
-                    //Deduct $20 from user request and increment twenty variable by one
+                    //Deduct $20 from input variable and increment twenty variable by one
                     input -= 20;
                     twenty++;
-                } //If user wants more than or equal to $10 and 10's are available in the cash register
+                }
+                //If input variable is more than or equal to $10 and 10's are available in the cash register
                 else if (input >= 10 && billsInRegister[1] - ten > 0) {
-                    //Deduct $10 from user request and increment ten variable by one
+                    //Deduct $10 from input variable and increment ten variable by one
                     input -= 10;
                     ten++;
+                }
+                //If input variable is more than or equal to $5 and 5's are available in the cash register
+                else if (input >= 5 && billsInRegister[2] - five > 0) {
+                    //Deduct $5 from input variable and increment five variable by one
+                    input -= 5;
+                    five++;
+                }
+                //If input variable is more than or equal to $2 and 2's are available in the cash register
+                else if (input >= 2 && billsInRegister[3] - two > 0) {
+                    //Deduct $2 from input variable and increment two variable by one
+                    input -= 2;
+                    two++;
+                }
+                //If input variable is more than or equal to $1 and 1's are available in the cash register
+                else if (billsInRegister[4] - one > 0) {
+                    //Deduct $1 from input variable and increment one variable by one
+                    input -= 1;
+                    one++;
                 } else {
-                    //If user wants more than or equal to $10 and cash user
-                    //wants mod 2 is 0 and more than one $5 bills is available in the cash register
-                    if (input >= 10 && input % 2 == 0 && billsInRegister[2] - five > 1) {
-                        //Deduct $10 from user request and increment five variable by two
-                        input -= 10;
-                        five += 2;
-                    } else {
-                        //If user wants more than $10 and 5 bills are available in the cash register
-                        if (input > 10 && billsInRegister[2] - five > 0) {
-                            //Deduct $5 from user request and increment five variable by one
-                            input -= 5;
-                            five++;
-                        } else {
-                            //If user request is more than $5 and cash is available in 5 and 1 bills
-                            if (input > 5 && billsInRegister[2] - five > 0 && billsInRegister[4] - one > 0) {
-                                //Deduct $5 from user request and increment five by one
-                                input -= 5;
-                                five++;
-                            } else {
-                                //If user wants more than or equal to $2 and 2 bills available in the cash register
-                                if (input >= 2 && billsInRegister[3] - two > 0) {
-                                    //Deduct $2 from user request and increment two variable by one
-                                    input -= 2;
-                                    two++;
-                                } //If user wants more than or equal to $1 and 1 bills are available in the cash register
-                                else if (billsInRegister[4] - one > 0) {
-                                    //Deduct $1 from user request and increment one variable by one
-                                    input -= 1;
-                                    one++;
-                                } else {
-                                    //Print sorry message, set success to false(not found) and break the loop
-                                    System.out.println("Sorry there is not enough cash in the register for this amount");
-                                    success = false;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    System.out.println("Sorry there is not enough cash in the register for this amount");
+                    //success is set to false if bills are not there to equal to the change amount
+                    success = false;
+                    break;
                 }
             }
             //If there is enough change in the cash register, then success remains true, and we deduct the
@@ -155,8 +136,7 @@ public class ActionsHelper {
                 //Printing the denomination of bills that is being taken after removing from the cash register
                 System.out.println(twenty + " " + ten + " " + five + " " + two + " " + one);
             }
-        }
-        else {
+        } else {
             System.out.println("Sorry, please input an amount smaller than what is in the register");
         }
     }
@@ -169,7 +149,7 @@ public class ActionsHelper {
         for (int i = 1; i < userInput.length; i++) {
             try {
                 bill = Integer.parseInt(userInput[i]);
-                if(bill < 0){
+                if (bill < 0) {
                     return true;
                 }
             } catch (NumberFormatException e) {
